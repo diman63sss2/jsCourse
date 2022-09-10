@@ -57,26 +57,21 @@ document.addEventListener('DOMContentLoaded', function () {
 // Проверка результата
 // По ходу ввода текста содержимое в h2 не изменяется.Содержимое обновляется через 300 мс после завершения ввода.
 
-document.addEventListener('DOMContentLoaded', function () {
-  (function () {
-    let inputText = document.querySelector('.text');
-    let textBlock = document.querySelector('h2');
-    let nIntervId;
 
-    function timerTick(input, text) {
-      text.textContent = input.value;
-      clearInterval(nIntervId);
-      nIntervId = null;
-    }
+(() => {
+  const inputText = document.createElement('input');
+  const textBlock = document.createElement('h2');
 
-    inputText.addEventListener('input', function () {
-      if (nIntervId) {
-        clearInterval(nIntervId);
-        nIntervId = null;
-      }
+  let nIntervId;
 
-      nIntervId = setInterval(timerTick, 300, inputText, textBlock);
-    });
-
-  })();
-});
+  inputText.addEventListener('input', () => {
+    clearInterval(nIntervId);
+    nIntervId = setTimeout(() => {
+      textBlock.textContent = inputText.value;
+    }, 300)
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    document.body.append(inputText);
+    document.body.append(textBlock);
+  });
+})();
